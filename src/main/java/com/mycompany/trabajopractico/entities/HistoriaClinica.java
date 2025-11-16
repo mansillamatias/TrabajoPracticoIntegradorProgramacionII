@@ -42,6 +42,14 @@ public class HistoriaClinica {
     }
 
     // Getters y setters
+    
+    private int idPaciente;
+    public int getIdPaciente() {
+    return idPaciente;
+}
+    public void setIdPaciente(int idPaciente) {
+    this.idPaciente = idPaciente;
+}
     public int getIdHistoria() {
         return idHistoria;
     }

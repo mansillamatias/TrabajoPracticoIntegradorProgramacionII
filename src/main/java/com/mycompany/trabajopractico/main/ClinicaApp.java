@@ -9,7 +9,7 @@ import com.mycompany.trabajopractico.dao.HistoriaClinicaDAO;
 import com.mycompany.trabajopractico.entities.Paciente;
 import com.mycompany.trabajopractico.entities.HistoriaClinica;
 import com.mycompany.trabajopractico.config.DatabaseConnection;
-
+import com.mycompany.trabajopractico.service.PacienteServiceImpl;
 
 
 public class ClinicaApp {
@@ -24,15 +24,13 @@ public class ClinicaApp {
             do {
                 System.out.println("\n --- MENÚ CLÍNICA ---");
                 System.out.println("1. Crear paciente");
-                System.out.println("2. Crear historia clínica");
-                System.out.println("3. Consultar paciente por ID");
-                System.out.println("4. Consultar historia clínica por ID");
-                System.out.println("5. Listar pacientes");
-                System.out.println("6. Listar historias clínicas");
-                System.out.println("7. Modificar paciente");
-                System.out.println("8. Modificar historia clínica");
-                System.out.println("9. Eliminar paciente (lógica)");
-                System.out.println("10. Eliminar historia clínica (lógica)");
+                System.out.println("2. Consultar paciente por ID");
+                System.out.println("3. Consultar historia clínica por ID");
+                System.out.println("4. Listar pacientes");
+                System.out.println("5. Listar historias clínicas");
+                System.out.println("6. Modificar paciente");
+                System.out.println("7. Modificar historia clínica");
+                System.out.println("8. Eliminar paciente (lógica)");
                 System.out.println("0. Salir");
                 System.out.print("Seleccione una opción: ");
                 opcion = scanner.nextInt();
@@ -41,8 +39,6 @@ public class ClinicaApp {
                 switch (opcion) {
                     case 1:
                         System.out.println("\n--- CREAR PACIENTE ---");
-                        System.out.print("ID: ");
-                        int idP = scanner.nextInt(); scanner.nextLine();
                         System.out.print("Nombre: ");
                         String nombre = scanner.nextLine();
                         System.out.print("Apellido: ");
@@ -51,54 +47,55 @@ public class ClinicaApp {
                         String dni = scanner.nextLine();
                         System.out.print("Fecha nacimiento (AAAA-MM-DD): ");
                         LocalDate fecha = LocalDate.parse(scanner.nextLine());
-                        System.out.print("ID historia asociada: ");
-                        int idHist = scanner.nextInt(); scanner.nextLine();
-
-                        HistoriaClinica historia = daoHistoria.leer(idHist, conn);
-                        if (historia != null) {
-                            Paciente nuevo = new Paciente(idP, nombre, apellido, dni, fecha, false, historia);
-                            daoPaciente.crear(nuevo, conn);
-                            System.out.println("Paciente creado.");
-                        } else {
-                            System.out.println("Historia no encontrada.");
-                        }
-                        break;
-
-                    case 2:
-                        System.out.println("\n--- CREAR HISTORIA CLÍNICA ---");
-                        System.out.print("ID: ");
-                        int idH = scanner.nextInt(); scanner.nextLine();
-                        System.out.print("Número: ");
-                        String nro = scanner.nextLine();
+                       
+                          // Datos de historia clínica
                         System.out.print("Grupo sanguíneo: ");
                         String grupo = scanner.nextLine();
                         System.out.print("Antecedentes: ");
-                        String ant = scanner.nextLine();
+                        String antecedentes = scanner.nextLine();
                         System.out.print("Medicación actual: ");
-                        String med = scanner.nextLine();
+                        String medicacion = scanner.nextLine();
                         System.out.print("Observaciones: ");
-                        String obs = scanner.nextLine();
+                        String observaciones = scanner.nextLine();
 
-                        HistoriaClinica nueva = new HistoriaClinica(idH, false, nro, grupo, ant, med, obs);
-                        daoHistoria.crear(nueva, conn);
-                        System.out.println("Historia clínica creada.");
+                        // Crear objetos
+                        Paciente nuevo = new Paciente();
+                        nuevo.setNombre(nombre);
+                        nuevo.setApellido(apellido);
+                        nuevo.setDni(dni);
+                        nuevo.setFechaNacimiento(fecha);
+                        nuevo.setEliminado(false);
+
+                        HistoriaClinica historia = new HistoriaClinica();
+                        historia.setNroHistoria("HC-" + dni); // o algún generador
+                        historia.setGrupoSanguineo(grupo);
+                        historia.setAntecedentes(antecedentes);
+                        historia.setMedicacionActual(medicacion);
+                        historia.setObservaciones(observaciones);
+                        historia.setEliminado(false);
+
+                        // Registrar
+                        PacienteServiceImpl servicio = new PacienteServiceImpl();
+                        servicio.registrarPacienteConHistoria(nuevo, historia);
+                        System.out.println("Paciente y historia clínica creados correctamente.");
                         break;
 
-                    case 3:
+
+                    case 2:
                         System.out.print("\nID paciente a consultar: ");
                         int idConsultaP = scanner.nextInt(); scanner.nextLine();
                         Paciente p = daoPaciente.leer(idConsultaP, conn);
                         System.out.println(p != null ? p : "Paciente no encontrado.");
                         break;
 
-                    case 4:
+                    case 3:
                         System.out.print("\nID historia a consultar: ");
                         int idConsultaH = scanner.nextInt(); scanner.nextLine();
                         HistoriaClinica h = daoHistoria.leer(idConsultaH, conn);
                         System.out.println(h != null ? h : "Historia no encontrada.");
                         break;
 
-                    case 5:
+                    case 4:
                         System.out.println("\n--- LISTA DE PACIENTES ---");
                         List<Paciente> pacientes = daoPaciente.leerTodos(conn);
                         for (Paciente pac : pacientes) {
@@ -106,7 +103,7 @@ public class ClinicaApp {
                         }
                         break;
 
-                    case 6:
+                    case 5:
                         System.out.println("\n--- LISTA DE HISTORIAS CLÍNICAS ---");
                         List<HistoriaClinica> historias = daoHistoria.leerTodos(conn);
                         for (HistoriaClinica hc : historias) {
@@ -114,7 +111,7 @@ public class ClinicaApp {
                         }
                         break;
 
-                    case 7:
+                    case 6:
                         System.out.print("\nID paciente a modificar: ");
                         int idModP = scanner.nextInt(); scanner.nextLine();
                         Paciente modP = daoPaciente.leer(idModP, conn);
@@ -130,7 +127,7 @@ public class ClinicaApp {
                         }
                         break;
 
-                    case 8:
+                    case 7:
                         System.out.print("\nID historia a modificar: ");
                         int idModH = scanner.nextInt(); scanner.nextLine();
                         HistoriaClinica modH = daoHistoria.leer(idModH, conn);
@@ -146,18 +143,11 @@ public class ClinicaApp {
                         }
                         break;
 
-                    case 9:
+                    case 8:
                         System.out.print("\nID paciente a eliminar: ");
                         int idDelP = scanner.nextInt(); scanner.nextLine();
                         daoPaciente.eliminarLogico(idDelP, conn);
                         System.out.println("Paciente eliminado lógicamente.");
-                        break;
-
-                    case 10:
-                        System.out.print("\nID historia a eliminar: ");
-                        int idDelH = scanner.nextInt(); scanner.nextLine();
-                        daoHistoria.eliminarLogico(idDelH, conn);
-                        System.out.println("Historia eliminada lógicamente.");
                         break;
 
                     case 0:
