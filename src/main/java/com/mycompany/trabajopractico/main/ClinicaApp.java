@@ -128,20 +128,21 @@ public class ClinicaApp {
                         break;
 
                     case 7:
-                        System.out.print("\nID historia a modificar: ");
-                        int idModH = scanner.nextInt(); scanner.nextLine();
-                        HistoriaClinica modH = daoHistoria.leer(idModH, conn);
-                        if (modH != null) {
-                            System.out.print("Nueva medicación actual: ");
-                            modH.setMedicacionActual(scanner.nextLine());
-                            System.out.print("Nuevas observaciones: ");
-                            modH.setObservaciones(scanner.nextLine());
-                            daoHistoria.actualizar(modH, conn);
-                            System.out.println("Historia modificada.");
-                        } else {
-                            System.out.println("Historia no encontrada.");
-                        }
-                        break;
+                    System.out.print("\nID del paciente cuya historia desea modificar: ");
+                    int idPacienteMod = scanner.nextInt(); scanner.nextLine();
+                    HistoriaClinica modH = daoHistoria.buscarPorIdPaciente(idPacienteMod, conn);
+
+                    if (modH != null) {
+                        System.out.print("Nueva medicación actual: ");
+                        modH.setMedicacionActual(scanner.nextLine());
+                        System.out.print("Nuevas observaciones: ");
+                        modH.setObservaciones(scanner.nextLine());
+                        daoHistoria.actualizar(modH, conn);
+                        System.out.println("Historia modificada.");
+                    } else {
+                        System.out.println("Historia no encontrada para el paciente.");
+                    }
+                    break;
 
                     case 8:
                         System.out.print("\nID paciente a eliminar: ");
