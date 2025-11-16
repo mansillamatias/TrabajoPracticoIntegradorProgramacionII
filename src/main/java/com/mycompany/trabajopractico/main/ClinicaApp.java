@@ -90,8 +90,8 @@ public class ClinicaApp {
 
                     case 3:
                         System.out.print("\nID historia a consultar: ");
-                        int idConsultaH = scanner.nextInt(); scanner.nextLine();
-                        HistoriaClinica h = daoHistoria.leer(idConsultaH, conn);
+                        int idPacienteConsulta = scanner.nextInt(); scanner.nextLine();
+                        HistoriaClinica h = daoHistoria.buscarPorIdPaciente(idPacienteConsulta, conn);
                         System.out.println(h != null ? h : "Historia no encontrada.");
                         break;
 
