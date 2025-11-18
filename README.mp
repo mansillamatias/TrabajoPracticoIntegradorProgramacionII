@@ -99,7 +99,7 @@ String password = "";
 
 🎥 Video demostrativo
 🔗 Ver video de funcionamiento del sistema
-(Reemplazar con el enlace real una vez subido)
+https://youtu.be/WwLBD791R6E
 
 🤝 Trabajo conjunto
 Este sistema forma parte de un trabajo integral desarrollado en conjunto entre las materias Programación II y Base de Datos I. Desde Programación II se abordó el diseño orientado a objetos, la implementación funcional por consola y la validación del flujo lógico. Desde Base de Datos I se trabajó la creación del modelo relacional, la carga masiva de datos, la integridad referencial y las pruebas de rendimiento. La articulación entre ambas materias permitió construir un sistema sólido, funcional y pedagógicamente significativo.
